@@ -6,8 +6,7 @@ from unittest import mock
 class TestBlockGridEditor(unittest.TestCase):
 	def setUp(self):
 		self.bgss = mock.Mock()
-		self.start_height = 10
-		self.block_grid = block_grid.BlockGrid(blocks={(0, 0): block.Block(self.start_height)})
+		self.block_grid = block_grid.BlockGrid(blocks={(0, 0): block.Block()})
 		self.block_grid_selector = block_grid_selector.BlockGridSelector(self.bgss)
 		self.block_grid_editor = block_grid_editor.BlockGridEditor(self.bgss, self.block_grid_selector)
 

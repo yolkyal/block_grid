@@ -4,11 +4,8 @@ class Block:
 	RIGHT = 2
 	BOTTOM = 3
 
-	def __init__(self, height=0, vertex_heights=None):
-		if vertex_heights:
-			self.vertex_heights = vertex_heights
-		else:
-			self.vertex_heights=[height, height, height, height]
+	def __init__(self, vertex_heights=[1, 1, 1, 1]):
+		self.vertex_heights = vertex_heights
 
 	def raise_(self, x):
 		return Block(vertex_heights=[(height + x) for height in self.vertex_heights])

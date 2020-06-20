@@ -2,7 +2,7 @@ import pygame
 import collision_utils
 import block_grid_space_manager
 
-DEFAULT_RAISE_INC = 10
+DEFAULT_RAISE_INC = 1
 
 class BlockGridEditor:
 	def __init__(self, bgss, block_selector):

@@ -1,13 +1,13 @@
 from block import Block
 
 class BlockGrid:
-	def __init__(self, size=1, blocks=None, start_height=0):
+	def __init__(self, size=1, blocks=None):
 		if blocks:
 			self.blocks = blocks
 		else:
 			self.blocks = {}
 			for pos in generate_sorted_keys(size):
-				self.blocks[pos] = Block(start_height)
+				self.blocks[pos] = Block()
 
 	def raise_(self, pos, x):
 		return BlockGrid(blocks={k: self.blocks[k].raise_(x if k == pos else 0) for k in self.blocks})

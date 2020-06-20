@@ -10,24 +10,24 @@ import block_grid_hoverer
 import block_grid_hoverer_drawer
 
 BG_COL = (220, 220, 220)
-SIZE = 9
-START_HEIGHT = 10
+SIZE = 5
 START_X = 350
 START_Y = 200
-BLOCK_WIDTH = 64
-BLOCK_HEIGHT = 24
+BLOCK_WIDTH = 128
+BLOCK_HEIGHT = 48
+HEIGHT_MODIFIER = 10
 
 def main():
 	pygame.init()
-	pygame.display.set_caption('bg_s' + str(SIZE) + '_sh' + str(START_HEIGHT) + '_sx' + str(START_X) + '_sy' + str(START_Y) + '_bw' + str(BLOCK_WIDTH) + '_bh' + str(BLOCK_HEIGHT))
+	pygame.display.set_caption('bg_s' + str(SIZE) + '_sx' + str(START_X) + '_sy' + str(START_Y) + '_bw' + str(BLOCK_WIDTH) + '_bh' + str(BLOCK_HEIGHT) + '_hm' + str(HEIGHT_MODIFIER))
 	size = width, height = 700, 700
 	d_surf = pygame.display.set_mode(size)
 	clock = pygame.time.Clock()
 
-	bgss = block_grid_space_manager.BlockGridSpaceSpecification(START_X, START_Y, BLOCK_WIDTH, BLOCK_HEIGHT)
+	bgss = block_grid_space_manager.BlockGridSpaceSpecification(START_X, START_Y, BLOCK_WIDTH, BLOCK_HEIGHT, HEIGHT_MODIFIER)
 	selector = block_grid_selector.BlockGridSelector(bgss)
 
-	grid = block_grid.BlockGrid(size=SIZE, start_height=10)
+	grid = block_grid.BlockGrid(size=SIZE)
 	grid_drawer = block_grid_drawer.BlockGridDrawer(bgss)
 	grid_editor = block_grid_editor.BlockGridEditor(bgss, selector)
 	grid_editor_drawer = block_grid_editor_drawer.BlockGridEditorDrawer(bgss)
