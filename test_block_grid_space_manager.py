@@ -1,6 +1,6 @@
 import unittest
-from unittest import mock
 import block_grid_space_manager
+from unittest import mock
 
 class TestBlockGridSpaceManager(unittest.TestCase):
 	def setUp(self):

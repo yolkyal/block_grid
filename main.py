@@ -40,10 +40,8 @@ def main():
 			if event.type == pygame.QUIT:
 				pygame.quit()
 				sys.exit()
-			elif event.type == pygame.MOUSEBUTTONUP:
-				grid_editor.handle_mouse_button_up(grid, event)
-			elif event.type == pygame.KEYDOWN:
-				grid = grid_editor.handle_key_down(grid, event)
+			else:
+				grid = grid_editor.handle_event(grid, event)
 
 		grid_hoverer.update(grid, pygame.mouse.get_pos())
 

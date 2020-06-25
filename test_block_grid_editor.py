@@ -1,91 +1,219 @@
 import unittest
 import pygame
-import block, block_grid, block_grid_editor, block_grid_selector, block_grid_space_manager
+import block_grid_editor
 from unittest import mock
 
 class TestBlockGridEditor(unittest.TestCase):
 	def setUp(self):
 		self.bgss = mock.Mock()
-		self.block_grid = block_grid.BlockGrid(blocks={(0, 0): block.Block()})
-		self.block_grid_selector = block_grid_selector.BlockGridSelector(self.bgss)
+		self.block_grid = mock.Mock()
+		self.block_grid_selector = mock.Mock()
 		self.block_grid_editor = block_grid_editor.BlockGridEditor(self.bgss, self.block_grid_selector)
+		self.mouse_pos = mock.Mock()
+		pygame.init()
 
-	def testSelect(self):
-		self.block_grid_selector.select = mock.Mock()
+	def tearDown(self):
+		pygame.quit()
+
+	def testSelectWithNoneSelected(self):
+		# GIVEN
 		self.block_grid_selector.select.return_value = (0, 0)
+		e1 = pygame.event.Event(pygame.MOUSEBUTTONDOWN, button=1, pos=self.mouse_pos)
+		e2 = pygame.event.Event(pygame.MOUSEBUTTONUP, button=1, pos=self.mouse_pos)
 
-		mouse_pos = mock.Mock()
+		# WHEN
+		self.block_grid_editor.handle_event(self.block_grid, e1)
+		self.block_grid_editor.handle_event(self.block_grid, e2)
 
-		e = pygame.event.Event(pygame.MOUSEBUTTONUP, button=1, pos=mouse_pos)
-		self.block_grid_editor.handle_mouse_button_up(self.block_grid, e)
+		# THEN
+		self.block_grid_selector.select.assert_called_with(self.block_grid, self.mouse_pos)
+		self.assertEqual({(0, 0)}, self.block_grid_editor.selected_blocks)
 
-		self.block_grid_selector.select.assert_called_with(self.block_grid, mouse_pos)
-		self.assertEqual([(0, 0)], self.block_grid_editor.selected_blocks)
+	def testSelectWithSelected(self):
+		# GIVEN
+		self.block_grid_editor.selected_blocks = {(0, 0), (0, 1)}
+		self.block_grid_selector.select.return_value = (1, 1)
+		e1 = pygame.event.Event(pygame.MOUSEBUTTONDOWN, button=1, pos=self.mouse_pos)
+		e2 = pygame.event.Event(pygame.MOUSEBUTTONUP, button=1, pos=self.mouse_pos)
 
-	def testRaise(self):
-		self.block_grid_editor.selected_blocks = [(0, 0)]
-		e = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_UP)
+		# WHEN
+		self.block_grid_editor.handle_event(self.block_grid, e1)
+		self.block_grid_editor.handle_event(self.block_grid, e2)
 
-		self.block_grid.raise_ = mock.Mock()
-		self.block_grid_editor.handle_key_down(self.block_grid, e)
+		# THEN
+		self.assertEqual({(1, 1)}, self.block_grid_editor.selected_blocks)
 
-		self.block_grid.raise_.assert_called_with((0, 0), block_grid_editor.DEFAULT_RAISE_INC)
+	@mock.patch('pygame.key.get_pressed')
+	def testSelectWithSelectedAndShiftPressed(self, mock_get_pressed):
+		mock_get_pressed.return_value = get_keys_pressed_with_lshift()
+		self.block_grid_editor.selected_blocks = {(0, 0), (0, 1)}
+		self.block_grid_selector.select.return_value = (1, 1)
+		e1 = pygame.event.Event(pygame.MOUSEBUTTONDOWN, button=1, pos=self.mouse_pos)
+		e2 = pygame.event.Event(pygame.MOUSEBUTTONUP, button=1, pos=self.mouse_pos)
 
-	def testLower(self):
-		self.block_grid_editor.selected_blocks = [(0, 0)]
-		e = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_DOWN)
+		# WHEN
+		self.block_grid_editor.handle_event(self.block_grid, e1)
+		self.block_grid_editor.handle_event(self.block_grid, e2)
 
-		self.block_grid.lower = mock.Mock()
-		self.block_grid_editor.handle_key_down(self.block_grid, e)
+		# THEN
+		self.assertEqual({(0, 0), (0, 1), (1, 1)}, self.block_grid_editor.selected_blocks)
 
-		self.block_grid.lower.assert_called_with((0, 0), block_grid_editor.DEFAULT_RAISE_INC)
+	def testMouseDragWithNoneSelected(self):
+		# GIVEN
+		self.block_grid_selector.select.side_effect = [(0, 0), (0, 1), (0, 1)]
+		e1 = pygame.event.Event(pygame.MOUSEBUTTONDOWN, button=1, pos=self.mouse_pos)
+		e2 = pygame.event.Event(pygame.MOUSEMOTION, buttons=[1], pos=self.mouse_pos)
+		e3 = pygame.event.Event(pygame.MOUSEMOTION, buttons=[1], pos=self.mouse_pos)
+		e4 = pygame.event.Event(pygame.MOUSEBUTTONUP, button=1, pos=self.mouse_pos)
 
-	def testRemove(self):
-		grid = block_grid.BlockGrid()
-		self.block_grid_editor.selected_blocks = [(0, 0)]
-		e = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_d)
+		# WHEN
+		self.block_grid_editor.handle_event(self.block_grid, e1)
+		self.block_grid_editor.handle_event(self.block_grid, e2)
+		self.block_grid_editor.handle_event(self.block_grid, e3)
+		self.block_grid_editor.handle_event(self.block_grid, e4)
 
-		grid.remove = mock.Mock()
-		self.block_grid_editor.handle_key_down(grid, e)
+		# THEN
+		self.assertEqual({(0, 0), (0, 1)}, self.block_grid_editor.selected_blocks)
 
-		grid.remove.assert_called_with((0, 0))
+	def testMouseDragWithSelected(self):
+		self.block_grid_editor.selected_blocks = {(0, 0), (0, 1)}
+		self.block_grid_selector.select.side_effect = [(1, 1), (1, 2), (1, 2)]
+		e1 = pygame.event.Event(pygame.MOUSEBUTTONDOWN, button=1, pos=self.mouse_pos)
+		e2 = pygame.event.Event(pygame.MOUSEMOTION, buttons=[1], pos=self.mouse_pos)
+		e3 = pygame.event.Event(pygame.MOUSEMOTION, buttons=[1], pos=self.mouse_pos)
+		e4 = pygame.event.Event(pygame.MOUSEBUTTONUP, button=1, pos=self.mouse_pos)
+
+		# WHEN
+		self.block_grid_editor.handle_event(self.block_grid, e1)
+		self.block_grid_editor.handle_event(self.block_grid, e2)
+		self.block_grid_editor.handle_event(self.block_grid, e3)
+		self.block_grid_editor.handle_event(self.block_grid, e4)
+
+		# THEN
+		self.assertEqual({(1, 1), (1, 2)}, self.block_grid_editor.selected_blocks)
+
+	@mock.patch('pygame.key.get_pressed')
+	def testMouseDragWithSelectedAndShiftPressed(self, mock_get_pressed):
+		mock_get_pressed.return_value = get_keys_pressed_with_lshift()
+		self.block_grid_editor.selected_blocks = {(0, 0), (0, 1)}
+		self.block_grid_selector.select.side_effect = [(1, 1), (1, 2), (1, 2)]
+		e1 = pygame.event.Event(pygame.MOUSEBUTTONDOWN, button=1, pos=self.mouse_pos)
+		e2 = pygame.event.Event(pygame.MOUSEMOTION, buttons=[1], pos=self.mouse_pos)
+		e3 = pygame.event.Event(pygame.MOUSEMOTION, buttons=[1], pos=self.mouse_pos)
+		e4 = pygame.event.Event(pygame.MOUSEBUTTONUP, button=1, pos=self.mouse_pos)
+
+		# WHEN
+		self.block_grid_editor.handle_event(self.block_grid, e1)
+		self.block_grid_editor.handle_event(self.block_grid, e2)
+		self.block_grid_editor.handle_event(self.block_grid, e3)
+		self.block_grid_editor.handle_event(self.block_grid, e4)
+
+		# THEN
+		self.assertEqual({(0, 0), (0, 1), (1, 1), (1, 2)}, self.block_grid_editor.selected_blocks)
+
+	@mock.patch('collision_utils.is_circle_point_collision', return_value = False)
+	@mock.patch('block_grid_space_manager.calculate_points')
+	def testDeselectAllWithOneSelected(self, mock_calculate_points, mock_circle_point_collision):
+		# GIVEN
+
+		self.block_grid_editor.selected_blocks = {(0, 0)}
+		self.block_grid_selector.select.return_value = None
+		e1 = pygame.event.Event(pygame.MOUSEBUTTONDOWN, button=1, pos=self.mouse_pos)
+		e2 = pygame.event.Event(pygame.MOUSEBUTTONUP, button=1, pos=self.mouse_pos)
+
+		# WHEN
+		self.block_grid_editor.handle_event(self.block_grid, e1)
+		self.block_grid_editor.handle_event(self.block_grid, e2)
+
+		# THEN
+		self.assertEqual(set(), self.block_grid_editor.selected_blocks)
 
 	@mock.patch('collision_utils.is_circle_point_collision', return_value = True)
 	@mock.patch('block_grid_space_manager.calculate_points')
 	def testSelectPoint(self, mock_calculate_points, mock_circle_point_collision):
-		mouse_pos = mock.Mock()
+		# GIVEN
+		self.block_grid.blocks = {(0, 0): mock.Mock()}
+		self.block_grid_editor.selected_blocks = {(0, 0)}
 
 		top_points = [(9, 10), (11, 12), (13, 14), (15, 16)]
-		mock_calculate_points.return_value = block_grid_space_manager.BlockSpaceInstance(None, top_points)
+		mock_block_space_instance = mock.Mock()
+		mock_block_space_instance.top_points = top_points
+		mock_calculate_points.return_value = mock_block_space_instance
 
-		self.block_grid_editor.selected_blocks = [(0, 0)]
+		mock_circle_point_collision.return_value = True
 
+		mouse_pos = mock.Mock()
 		e = pygame.event.Event(pygame.MOUSEBUTTONUP, button=1, pos=mouse_pos)
-		self.block_grid_editor.handle_mouse_button_up(self.block_grid, e)
 
-		self.assertEqual([0], self.block_grid_editor.selected_points)
+		# WHEN
+		self.block_grid_editor.handle_event(self.block_grid, e)
+
+		# THEN 
+		self.assertEqual({0}, self.block_grid_editor.selected_points)
 		mock_calculate_points.assert_called_once_with((0, 0), self.block_grid.blocks[(0, 0)], self.bgss)
 		mock_circle_point_collision.assert_called_once_with(top_points[0], 5, mouse_pos)
 
-	def testRaisePoint(self):
-		self.block_grid_editor.selected_blocks = [(0, 0)]
-		self.block_grid_editor.selected_points = [0]
-
+	def testRaise(self):
+		# GIVEN
+		self.block_grid_editor.selected_blocks = {(0, 0)}
 		e = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_UP)
-		self.block_grid.raise_point = mock.Mock()
-		self.block_grid_editor.handle_key_down(self.block_grid, e)
 
+		# WHEN
+		self.block_grid_editor.handle_event(self.block_grid, e)
+
+		# THEN
+		self.block_grid.raise_.assert_called_with((0, 0), block_grid_editor.DEFAULT_RAISE_INC)
+
+	def testLower(self):
+		# GIVEN
+		self.block_grid_editor.selected_blocks = {(0, 0)}
+		e = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_DOWN)
+
+		# WHEN
+		self.block_grid_editor.handle_event(self.block_grid, e)
+
+		# THEN
+		self.block_grid.lower.assert_called_with((0, 0), block_grid_editor.DEFAULT_RAISE_INC)
+
+	def testRemove(self):
+		# GIVEN
+		self.block_grid_editor.selected_blocks = {(0, 0)}
+		e = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_d)
+
+		# WHEN
+		self.block_grid_editor.handle_event(self.block_grid, e)
+
+		# THEN
+		self.block_grid.remove.assert_called_with((0, 0))
+
+	def testRaisePoint(self):
+		# GIVEN
+		self.block_grid_editor.selected_blocks = {(0, 0)}
+		self.block_grid_editor.selected_points = {0}
+		e = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_UP)
+
+		# WHEN
+		self.block_grid_editor.handle_event(self.block_grid, e)
+
+		# THEN
 		self.block_grid.raise_point.assert_called_once_with((0, 0), 0, block_grid_editor.DEFAULT_RAISE_INC)
 
 	def testLowerPoint(self):
-		self.block_grid_editor.selected_blocks = [(0, 0)]
-		self.block_grid_editor.selected_points = [0]
-
+		# GIVEN
+		self.block_grid_editor.selected_blocks = {(0, 0)}
+		self.block_grid_editor.selected_points = {0}
 		e = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_DOWN)
-		self.block_grid.lower_point = mock.Mock()
-		self.block_grid_editor.handle_key_down(self.block_grid, e)
 
+		# WHEN
+		self.block_grid_editor.handle_event(self.block_grid, e)
+
+		# THEN
 		self.block_grid.lower_point.assert_called_once_with((0, 0), 0, block_grid_editor.DEFAULT_RAISE_INC)
+
+def get_keys_pressed_with_lshift():
+	keys_pressed = [0] * 305
+	keys_pressed[pygame.K_LSHIFT] = 1
+	return tuple(keys_pressed)
 		
 
 if __name__ == '__main__':
