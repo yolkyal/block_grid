@@ -1,7 +1,6 @@
 import sys
 import pygame
 import block_grid
-import block_drawer
 import block_grid_drawer
 import block_grid_editor
 import block_grid_editor_drawer
@@ -11,11 +10,11 @@ import block_grid_hoverer
 import block_grid_hoverer_drawer
 
 BG_COL = (220, 220, 220)
-SIZE = 7
+SIZE = 5
 START_X = 350
 START_Y = 200
-BLOCK_WIDTH = 80
-BLOCK_HEIGHT = 32
+BLOCK_WIDTH = 128
+BLOCK_HEIGHT = 48
 HEIGHT_MODIFIER = 10
 
 def main():
@@ -29,20 +28,22 @@ def main():
 	selector = block_grid_selector.BlockGridSelector(bgss)
 
 	grid = block_grid.BlockGrid(size=SIZE)
-	grid_drawer = block_grid_drawer.BlockGridDrawer(block_drawer.BlockDrawer(bgss))
+	grid_drawer = block_grid_drawer.BlockGridDrawer(bgss)
 	grid_editor = block_grid_editor.BlockGridEditor(bgss, selector)
 	grid_editor_drawer = block_grid_editor_drawer.BlockGridEditorDrawer(bgss)
 	grid_hoverer = block_grid_hoverer.BlockGridHoverer(selector)
 	grid_hoverer_drawer = block_grid_hoverer_drawer.BlockGridHovererDrawer(bgss)
 
 	while True:
+		delta_ms = clock.tick(30)
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				pygame.quit()
 				sys.exit()
 			else:
 				grid = grid_editor.handle_event(grid, event)
-			grid_hoverer.update(grid, pygame.mouse.get_pos())
+
+		grid_hoverer.update(grid, pygame.mouse.get_pos())
 
 		clock.tick(30)
 		d_surf.fill(BG_COL)
