@@ -44,7 +44,3 @@ class TestBlock(unittest.TestCase):
 		self.block.vertex_heights = [0, 0, 0, 0]
 		block = self.block.lower_point(0, 1)
 		self.assertEqual(0, block.vertex_heights[0])
-
-
-if __name__ == '__main__':
-	unittest.main()

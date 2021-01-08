@@ -50,6 +50,3 @@ class TestBlockGrid(unittest.TestCase):
 		grid = self.grid.remove((0, 0))
 		self.assertEqual([(0, 1), (1, 0), (0, 2), (1, 1), (2, 0), (1, 2), (2, 1), (2, 2)], list(grid.blocks.keys()))
 
-
-if __name__ == '__main__':
-	unittest.main()

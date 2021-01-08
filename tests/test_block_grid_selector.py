@@ -52,6 +52,3 @@ class TestBlockGridSelector(unittest.TestCase):
 
 		self.assertEqual(expected_calculate_points_calls, mock_calculate_points.call_args_list)
 
-
-if __name__ == '__main__':
-	unittest.main()

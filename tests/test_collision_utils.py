@@ -69,5 +69,3 @@ class TestCollisionUtils(unittest.TestCase):
 		self.assertFalse(collision_utils.is_circle_point_collision(centre, radius, (100, 100 - radius - 1)))
 		self.assertFalse(collision_utils.is_circle_point_collision(centre, radius, (100, 100 + radius + 1)))
 
-if __name__ == '__main__':
-	unittest.main()

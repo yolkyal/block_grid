@@ -52,6 +52,3 @@ class TestBlockGridDrawer(unittest.TestCase):
 
 		self.assertEqual(expected_polygon_calls, mock_draw_polygon.call_args_list)
 
-if __name__ == '__main__':
-	unittest.main()
-

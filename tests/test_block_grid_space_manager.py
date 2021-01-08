@@ -32,6 +32,3 @@ class TestBlockGridSpaceManager(unittest.TestCase):
 		self.assertEqual([left_point_bottom, top_point_bottom, right_point_bottom, bottom_point_bottom], result.base_points)
 		self.assertEqual([left_point_top, top_point_top, right_point_top, bottom_point_top], result.top_points)
 
-
-if __name__ == '__main__':
-	unittest.main()

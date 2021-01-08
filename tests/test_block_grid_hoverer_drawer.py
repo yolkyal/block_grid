@@ -25,6 +25,3 @@ class TestBlockGridHovererDrawer(unittest.TestCase):
 
 		mock_draw_polygon.assert_called_with(self.d_surf, block_grid_hoverer_drawer.DEFAULT_HOVER_COL, self.points.top_points)
 
-
-if __name__ == '__main__':
-	unittest.main()

@@ -64,6 +64,3 @@ class TestBlockGridEditorDrawer(unittest.TestCase):
 
 		self.assertEqual(expected_draw_circle_calls, mock_draw_circle.call_args_list)
 
-
-if __name__ == '__main__':
-	unittest.main()

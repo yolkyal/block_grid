@@ -20,6 +20,3 @@ class TestBlockGridHoverer(unittest.TestCase):
 		self.assertEqual((0, 0), self.block_grid_hoverer.hovered)
 		self.block_grid_selector.select.assert_called_with(self.block_grid, mouse_pos)
 
-
-if __name__ == '__main__':
-	unittest.main()

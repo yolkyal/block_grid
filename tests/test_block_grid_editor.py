@@ -211,10 +211,8 @@ class TestBlockGridEditor(unittest.TestCase):
 		self.block_grid.lower_point.assert_called_once_with((0, 0), 0, block_grid_editor.DEFAULT_RAISE_INC)
 
 def get_keys_pressed_with_lshift():
-	keys_pressed = [0] * 305
+	keys_pressed = [0] * 512
 	keys_pressed[pygame.K_LSHIFT] = 1
 	return tuple(keys_pressed)
-		
 
-if __name__ == '__main__':
-	unittest.main()
+		
