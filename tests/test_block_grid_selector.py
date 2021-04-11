@@ -1,5 +1,5 @@
 import unittest
-import block, block_grid, block_grid_selector, block_grid_space_manager
+from block_grid import block, block_grid, block_grid_selector, block_grid_space_manager
 from unittest import mock
 from unittest.mock import Mock
 

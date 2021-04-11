@@ -10,12 +10,12 @@ import block_grid_hoverer
 import block_grid_hoverer_drawer
 
 BG_COL = (220, 220, 220)
-SIZE = 5
+SIZE = 7
 START_X = 350
 START_Y = 200
-BLOCK_WIDTH = 128
-BLOCK_HEIGHT = 48
-HEIGHT_MODIFIER = 10
+BLOCK_WIDTH = 64
+BLOCK_HEIGHT = 24
+HEIGHT_MODIFIER = 12
 
 def main():
 	pygame.init()

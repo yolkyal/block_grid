@@ -1,5 +1,5 @@
 import pygame, unittest
-import block_grid_hoverer_drawer, block_grid_space_manager
+from block_grid import block_grid_hoverer_drawer, block_grid_space_manager
 from unittest import mock
 
 

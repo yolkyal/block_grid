@@ -1,6 +1,6 @@
 import pygame
 import unittest
-import block_grid_editor_drawer
+from block_grid import block_grid_editor_drawer
 from unittest import mock
 
 class TestBlockGridEditorDrawer(unittest.TestCase):

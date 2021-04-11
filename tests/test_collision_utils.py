@@ -1,5 +1,5 @@
 import unittest
-import collision_utils
+from block_grid import collision_utils
 
 class TestCollisionUtils(unittest.TestCase):
 

@@ -1,6 +1,6 @@
 import unittest, pygame
+from block_grid import block, block_grid, block_grid_space_manager, block_grid_drawer
 from unittest import mock
-import block, block_grid, block_grid_space_manager, block_grid_drawer
 
 class TestBlockGridDrawer(unittest.TestCase):
 	def setUp(self):

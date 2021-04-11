@@ -1,5 +1,5 @@
 import unittest
-import block_grid_space_manager
+from block_grid import block_grid_space_manager
 from unittest import mock
 
 class TestBlockGridSpaceManager(unittest.TestCase):
