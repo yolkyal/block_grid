@@ -10,5 +10,5 @@ class BlockGridHovererDrawer:
 	def draw(self, grid, hoverer, d_surf):
 		k = hoverer.hovered
 		if k:
-			points = block_grid_space_manager.calculate_points(k, grid.blocks[k], self.bgss)
+			points = block_grid_space_manager.calculate_block_points(k, grid.blocks[k], self.bgss)
 			pygame.draw.polygon(d_surf, DEFAULT_HOVER_COL, points.top_points)

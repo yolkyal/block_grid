@@ -1,6 +1,5 @@
 import pygame
-import collision_utils
-import block_grid_space_manager
+import collision_utils, block_grid_space_manager
 
 DEFAULT_RAISE_INC = 1
 
@@ -71,7 +70,7 @@ class BlockGridEditor:
 
 	def get_selected_point(self, grid, pos):
 		for k in self.selected_blocks:
-			points = block_grid_space_manager.calculate_points(k, grid.blocks.get(k), self.bgss)
+			points = block_grid_space_manager.calculate_block_points(k, grid.blocks.get(k), self.bgss)
 			for i, top_point in enumerate(points.top_points):
 				if collision_utils.is_circle_point_collision(top_point, 5, pos):
 					return i

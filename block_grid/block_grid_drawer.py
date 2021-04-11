@@ -10,7 +10,7 @@ class BlockGridDrawer:
 
 	def draw_mesh(self, grid, d_surf):
 		for k in grid.blocks:
-			points = block_grid_space_manager.calculate_points(k, grid.blocks[k], self.bgss)
+			points = block_grid_space_manager.calculate_block_points(k, grid.blocks[k], self.bgss)
 
 			pygame.draw.lines(d_surf, DEFAULT_LINE_COLOUR, True, points.top_points)
 			pygame.draw.lines(d_surf, DEFAULT_LINE_COLOUR, True, points.base_points)
@@ -20,7 +20,7 @@ class BlockGridDrawer:
 
 	def draw_fill(self, grid, d_surf, colour_map={}):
 		for k in grid.blocks:
-			points = block_grid_space_manager.calculate_points(k, grid.blocks[k], self.bgss)
+			points = block_grid_space_manager.calculate_block_points(k, grid.blocks[k], self.bgss)
 
 			side_points = [points.top_points[0], points.top_points[3], points.top_points[2], 
 			points.base_points[2], points.base_points[3], points.base_points[0]]
