@@ -1,5 +1,5 @@
 import pygame
-import collision_utils, block_grid_space_manager
+from block_grid.src import collision_utils, block_grid_space_manager
 
 DEFAULT_RAISE_INC = 1
 

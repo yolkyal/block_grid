@@ -1,6 +1,6 @@
 import pygame
 import unittest
-from block_grid import block_grid_editor_drawer
+from block_grid.src import block_grid_editor_drawer
 from unittest import mock
 
 class TestBlockGridEditorDrawer(unittest.TestCase):
@@ -19,7 +19,7 @@ class TestBlockGridEditorDrawer(unittest.TestCase):
 
 	@mock.patch('pygame.draw.circle')
 	@mock.patch('pygame.draw.polygon')
-	@mock.patch('block_grid_space_manager.calculate_points')
+	@mock.patch('block_grid.src.block_grid_space_manager.calculate_block_points')
 	def testDraw(self, mock_calculate_points, mock_draw_polygon, mock_draw_circle):
 		# GIVEN
 		self.block_grid_editor.selected_blocks = [(0, 0)]
@@ -47,7 +47,7 @@ class TestBlockGridEditorDrawer(unittest.TestCase):
 
 	@mock.patch('pygame.draw.circle')
 	@mock.patch('pygame.draw.polygon')
-	@mock.patch('block_grid_space_manager.calculate_points')
+	@mock.patch('block_grid.src.block_grid_space_manager.calculate_block_points')
 	def testDrawSelectedPoint(self, mock_calculate_points, mock_draw_polygon, mock_draw_circle):
 		self.block_grid_editor.selected_blocks = [(0, 0)]
 		self.block_grid_editor.selected_points = [0]

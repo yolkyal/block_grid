@@ -1,5 +1,5 @@
 import unittest, pygame
-from block_grid import block, block_grid, block_grid_space_manager, block_grid_drawer
+from block_grid.src import block, block_grid, block_grid_drawer
 from unittest import mock
 
 class TestBlockGridDrawer(unittest.TestCase):
@@ -8,11 +8,11 @@ class TestBlockGridDrawer(unittest.TestCase):
 
 		self.base_points = [(1, 2), (3, 4), (5, 6), (7, 8)]
 		self.top_points = [(9, 10), (11, 12), (13, 14), (15, 16)]
-		self.points = block_grid_space_manager.BlockSpaceInstance(self.base_points, self.top_points)
+		self.points = mock.Mock(base_points=self.base_points, top_points=self.top_points)
 
 		self.block_grid_drawer = block_grid_drawer.BlockGridDrawer('BGSS')
 	
-	@mock.patch('block_grid_space_manager.calculate_points')
+	@mock.patch('block_grid.src.block_grid_space_manager.calculate_block_points')
 	@mock.patch('pygame.draw.line')
 	@mock.patch('pygame.draw.lines')
 	def testDrawMesh(self, mock_draw_lines, mock_draw_line, mock_calculate_points):
@@ -36,7 +36,7 @@ class TestBlockGridDrawer(unittest.TestCase):
 		self.assertEqual(expected_lines_calls, mock_draw_lines.call_args_list)
 		self.assertEqual(expected_line_calls, mock_draw_line.call_args_list)
 
-	@mock.patch('block_grid_space_manager.calculate_points')
+	@mock.patch('block_grid.src.block_grid_space_manager.calculate_block_points')
 	@mock.patch('pygame.draw.polygon')
 	def testDrawFill(self, mock_draw_polygon, mock_calculate_points):
 		d_surf = 'D_SURF'

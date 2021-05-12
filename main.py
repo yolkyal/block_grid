@@ -1,13 +1,13 @@
 import sys
 import pygame
-import block_grid
-import block_grid_drawer
-import block_grid_editor
-import block_grid_editor_drawer
-import block_grid_space_manager
-import block_grid_selector
-import block_grid_hoverer
-import block_grid_hoverer_drawer
+from block_grid.src import block_grid
+from block_grid.src import block_grid_drawer
+from block_grid.src import block_grid_editor
+from block_grid.src import block_grid_editor_drawer
+from block_grid.src import block_grid_space_manager
+from block_grid.src import block_grid_selector
+from block_grid.src import block_grid_hoverer
+from block_grid.src import block_grid_hoverer_drawer
 
 BG_COL = (220, 220, 220)
 SIZE = 7

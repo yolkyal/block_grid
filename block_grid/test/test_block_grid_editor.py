@@ -1,6 +1,6 @@
 import unittest
 import pygame
-from block_grid import block_grid_editor
+from block_grid.src import block_grid_editor
 from unittest import mock
 
 class TestBlockGridEditor(unittest.TestCase):
@@ -111,8 +111,8 @@ class TestBlockGridEditor(unittest.TestCase):
 		# THEN
 		self.assertEqual({(0, 0), (0, 1), (1, 1), (1, 2)}, self.block_grid_editor.selected_blocks)
 
-	@mock.patch('collision_utils.is_circle_point_collision', return_value = False)
-	@mock.patch('block_grid_space_manager.calculate_points')
+	@mock.patch('block_grid.src.collision_utils.is_circle_point_collision', return_value = False)
+	@mock.patch('block_grid.src.block_grid_space_manager.calculate_block_points')
 	def testDeselectAllWithOneSelected(self, mock_calculate_points, mock_circle_point_collision):
 		# GIVEN
 
@@ -128,8 +128,8 @@ class TestBlockGridEditor(unittest.TestCase):
 		# THEN
 		self.assertEqual(set(), self.block_grid_editor.selected_blocks)
 
-	@mock.patch('collision_utils.is_circle_point_collision', return_value = True)
-	@mock.patch('block_grid_space_manager.calculate_points')
+	@mock.patch('block_grid.src.collision_utils.is_circle_point_collision', return_value = True)
+	@mock.patch('block_grid.src.block_grid_space_manager.calculate_block_points')
 	def testSelectPoint(self, mock_calculate_points, mock_circle_point_collision):
 		# GIVEN
 		self.block_grid.blocks = {(0, 0): mock.Mock()}
@@ -211,8 +211,7 @@ class TestBlockGridEditor(unittest.TestCase):
 		self.block_grid.lower_point.assert_called_once_with((0, 0), 0, block_grid_editor.DEFAULT_RAISE_INC)
 
 def get_keys_pressed_with_lshift():
-	keys_pressed = [0] * 512
+	keys_pressed = {}
 	keys_pressed[pygame.K_LSHIFT] = 1
-	return tuple(keys_pressed)
+	return keys_pressed
 
-		

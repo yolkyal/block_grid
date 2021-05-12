@@ -1,5 +1,5 @@
 import pygame
-import block_grid_space_manager
+from block_grid.src import block_grid_space_manager
 DEFAULT_SELECTED_COLOUR = (200, 200, 200)
 DEFAULT_POINT_COLOUR = (70, 70, 70)
 SELECTED_POINT_COLOUR = (150, 255, 150)

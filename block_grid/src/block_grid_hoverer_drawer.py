@@ -1,5 +1,5 @@
 import pygame
-import block_grid_space_manager
+from block_grid.src import block_grid_space_manager
 
 DEFAULT_HOVER_COL = (160, 160, 160)
 

@@ -1,5 +1,5 @@
 import unittest
-from block_grid.block import Block
+from block_grid.src.block import Block
 
 
 class TestBlock(unittest.TestCase):

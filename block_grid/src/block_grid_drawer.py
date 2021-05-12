@@ -1,5 +1,5 @@
 import pygame
-import block_grid_space_manager
+from block_grid.src import block_grid_space_manager
 DEFAULT_TOP_COLOUR = (150, 150, 150)
 DEFAULT_SIDE_COLOUR = (100, 100, 100)
 DEFAULT_LINE_COLOUR = (50, 50, 50)

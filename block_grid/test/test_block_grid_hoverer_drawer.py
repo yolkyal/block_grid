@@ -1,5 +1,5 @@
 import pygame, unittest
-from block_grid import block_grid_hoverer_drawer, block_grid_space_manager
+from block_grid.src import block_grid_hoverer_drawer, block_grid_space_manager
 from unittest import mock
 
 
@@ -13,7 +13,7 @@ class TestBlockGridHovererDrawer(unittest.TestCase):
 		self.points.top_points = [(9, 10), (11, 12), (13, 14), (15, 16)]
 		self.hoverer_drawer = block_grid_hoverer_drawer.BlockGridHovererDrawer(self.bgss)
 
-	@mock.patch('block_grid_space_manager.calculate_points')
+	@mock.patch('block_grid.src.block_grid_space_manager.calculate_block_points')
 	@mock.patch('pygame.draw.polygon')
 	def testDraw(self, mock_draw_polygon, mock_calculate_points):
 		mock_calculate_points.return_value = self.points

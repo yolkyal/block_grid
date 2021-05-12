@@ -1,4 +1,4 @@
-from block import Block
+from block_grid.src.block import Block
 
 class BlockGrid:
 	def __init__(self, size=1, blocks=None):

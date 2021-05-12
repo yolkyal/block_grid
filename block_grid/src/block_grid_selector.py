@@ -1,4 +1,4 @@
-import block_grid_space_manager, collision_utils
+from block_grid.src import block_grid_space_manager, collision_utils
 
 class BlockGridSelector:
 	def __init__(self, bgss):
