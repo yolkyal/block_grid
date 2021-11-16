@@ -18,7 +18,7 @@ def calculate_block_points(block_pos, block, bgss):
 	base_points = [(centre[0] - bgss.block_width / 2, centre[1]), (centre[0], centre[1] - bgss.block_height / 2),
 	(centre[0] + bgss.block_width / 2, centre[1]), (centre[0], centre[1] + bgss.block_height / 2)]
 
-	top_points = [(base_points[i][0], base_points[i][1] - block.vertex_heights[i][1] * bgss.height_modifier) for i in range(4)]
+	top_points = [(base_points[i][0], base_points[i][1] - block.vertex_heights[i] * bgss.height_modifier) for i in range(4)]
 
 	return BlockSpaceInstance(base_points, top_points)
 

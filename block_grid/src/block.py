@@ -1,9 +1,9 @@
-class Block:
-	LEFT = 0
-	TOP = 1
-	RIGHT = 2
-	BOTTOM = 3
+LEFT = 0
+TOP = 1
+RIGHT = 2
+BOTTOM = 3
 
+class Block:
 	def __init__(self, vertex_heights=[1, 1, 1, 1]):
 		self.vertex_heights = vertex_heights
 

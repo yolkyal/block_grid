@@ -47,7 +47,7 @@ def main():
 
 		clock.tick(30)
 		d_surf.fill(BG_COL)
-		grid_drawer.draw_fill(grid, d_surf)
+		grid_drawer.draw_fill_mesh_front(grid, d_surf)
 		grid_hoverer_drawer.draw(grid, grid_hoverer, d_surf)
 		grid_editor_drawer.draw(grid, grid_editor, d_surf)
 		pygame.display.update()

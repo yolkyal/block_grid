@@ -14,7 +14,7 @@ class TestBlockGridSpaceManager(unittest.TestCase):
 
 	def testCalculateBlockPoints(self):
 		block = mock.Mock()
-		block.vertex_heights = [(0, self.start_height), (0, self.start_height), (0, self.start_height), (0, self.start_height)]
+		block.vertex_heights = [self.start_height, self.start_height, self.start_height, self.start_height]
 
 		left_point_bottom = (float(self.start_x - (self.block_width / 2)), float(self.start_y))
 		top_point_bottom = (float(self.start_x), float(self.start_y - self.block_height / 2))
