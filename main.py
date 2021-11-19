@@ -20,7 +20,7 @@ HEIGHT_MODIFIER = 12
 def main():
 	pygame.init()
 	pygame.display.set_caption('bg_s' + str(SIZE) + '_sx' + str(START_X) + '_sy' + str(START_Y) + '_bw' + str(BLOCK_WIDTH) + '_bh' + str(BLOCK_HEIGHT) + '_hm' + str(HEIGHT_MODIFIER))
-	size = width, height = 700, 700
+	size = width, height = 700, 500
 	d_surf = pygame.display.set_mode(size)
 	clock = pygame.time.Clock()
 
