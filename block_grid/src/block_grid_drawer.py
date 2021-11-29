@@ -23,22 +23,20 @@ class BlockGridDrawer:
 		for k in grid.blocks:
 			points = block_grid_space_manager.calculate_block_points(k, grid.blocks[k], self.bgss)
 
-			side_points = [points.top_points[LEFT], points.top_points[BOTTOM], points.top_points[RIGHT], 
-			points.base_points[RIGHT], points.base_points[BOTTOM], points.base_points[LEFT]]
+			front_points = [points.top_points[i] for i in [LEFT, BOTTOM, RIGHT]] + [points.base_points[i] for i in [RIGHT, BOTTOM, LEFT]]
 
 			pygame.draw.polygon(d_surf, colour_map.get(k, DEFAULT_TOP_COLOUR), points.top_points)
-			pygame.draw.polygon(d_surf, DEFAULT_SIDE_COLOUR, side_points)
+			pygame.draw.polygon(d_surf, DEFAULT_SIDE_COLOUR, front_points)
 
 	def draw_fill_mesh_front(self, grid, d_surf, colour_map={}):
 		for k in grid.blocks:
 			points = block_grid_space_manager.calculate_block_points(k, grid.blocks[k], self.bgss)
 
-			side_points = [points.top_points[LEFT], points.top_points[BOTTOM], points.top_points[RIGHT], 
-			points.base_points[RIGHT], points.base_points[BOTTOM], points.base_points[LEFT]]
+			front_points = [points.top_points[i] for i in [LEFT, BOTTOM, RIGHT]] + [points.base_points[i] for i in [RIGHT, BOTTOM, LEFT]]
 
 			pygame.draw.polygon(d_surf, colour_map.get(k, DEFAULT_TOP_COLOUR), points.top_points)
 			pygame.draw.lines(d_surf, DEFAULT_LINE_COLOUR, True, points.top_points)
 
-			pygame.draw.polygon(d_surf, DEFAULT_SIDE_COLOUR, side_points)
-			pygame.draw.lines(d_surf, DEFAULT_LINE_COLOUR, True, side_points)
+			pygame.draw.polygon(d_surf, DEFAULT_SIDE_COLOUR, front_points)
+			pygame.draw.lines(d_surf, DEFAULT_LINE_COLOUR, True, front_points)
 			pygame.draw.line(d_surf, DEFAULT_LINE_COLOUR, points.top_points[BOTTOM], points.base_points[BOTTOM])
