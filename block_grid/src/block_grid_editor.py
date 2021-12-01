@@ -2,10 +2,12 @@ import pygame
 from block_grid.src import collision_utils, block_grid_space_manager
 
 DEFAULT_RAISE_INC = 1
+DEFAULT_SAVE_NAME = 'block_grid_0'
 
 class BlockGridEditor:
-	def __init__(self, bgss, block_selector):
+	def __init__(self, bgss, block_selector, block_grid_save_loader):
 		self.block_selector = block_selector
+		self.block_grid_save_loader = block_grid_save_loader
 		self.bgss = bgss
 		self.selected_blocks = set()
 		self.selected_points = set()
@@ -49,7 +51,11 @@ class BlockGridEditor:
 			self.selected_blocks = set()
 
 	def _handle_key_down(self, grid, event):
-		if self.selected_points:
+		if event.key == pygame.K_s:
+			self.block_grid_save_loader.save(grid, DEFAULT_SAVE_NAME)
+		elif event.key == pygame.K_l:
+			grid = self.block_grid_save_loader.load(DEFAULT_SAVE_NAME)
+		elif self.selected_points:
 			if event.key == pygame.K_UP:
 				return grid.raise_point(next(iter(self.selected_blocks)), next(iter(self.selected_points)), DEFAULT_RAISE_INC)
 			elif event.key == pygame.K_DOWN:

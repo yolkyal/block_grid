@@ -10,13 +10,13 @@ class TestBlockGridSaveLoader(unittest.TestCase):
 		self.block_grid = block_grid.BlockGrid()
 		self.block_grid_save_loader = block_grid_save_loader.BlockGridSaveLoader(self.dest_folder)
 
-	@mock.patch("builtins.open", new_callable=mock.mock_open, read_data="{\"(0, 0)\": \"[1, 1, 1, 1]\"}")
+	@mock.patch("builtins.open", new_callable=mock.mock_open, read_data="{\n  \"(0, 0)\": \"[1, 1, 1, 1]\"\n}")
 	def testLoad(self, mock_open):
 		# GIVEN
 		result = self.block_grid_save_loader.load(self.block_grid_name)
 
 		# WHEN
-		mock_open.assert_called_once_with(self.dest_folder + '/' + self.block_grid_name + '.bg', 'r')
+		mock_open.assert_called_once_with(self.dest_folder + '/' + self.block_grid_name + '.json', 'r')
 		
 		# THEN
 		self.assertEqual(len(result.blocks), 1)
@@ -28,5 +28,5 @@ class TestBlockGridSaveLoader(unittest.TestCase):
 		self.block_grid_save_loader.save(self.block_grid, self.block_grid_name)
 
 		# THEN
-		mock_open.assert_called_once_with(self.dest_folder + '/' + self.block_grid_name + '.bg', 'w')
-		mock_open.return_value.write.assert_called_once_with("{\"(0, 0)\": \"[1, 1, 1, 1]\"}")
+		mock_open.assert_called_once_with(self.dest_folder + '/' + self.block_grid_name + '.json', 'w')
+		mock_open.return_value.write.assert_called_once_with("{\n  \"(0, 0)\": \"[1, 1, 1, 1]\"\n}")

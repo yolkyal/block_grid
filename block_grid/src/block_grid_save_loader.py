@@ -9,11 +9,11 @@ class BlockGridSaveLoader:
 		self.dest_folder = dest_folder 
 
 	def save(self, block_grid, filename):
-		with open(f"{self.dest_folder}/{filename}.bg", 'w') as f:
-			f.write(json.dumps(block_grid, cls=BlockGridEncoder))
+		with open(f"{self.dest_folder}/{filename}.json", 'w') as f:
+			f.write(json.dumps(block_grid, indent=2, cls=BlockGridEncoder))
 
 	def load(self, filename):
-		with open(f"{self.dest_folder}/{filename}.bg", 'r') as f:
+		with open(f"{self.dest_folder}/{filename}.json", 'r') as f:
 			return json.load(f, cls=BlockGridEncoder)
 
 

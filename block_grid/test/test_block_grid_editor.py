@@ -8,7 +8,8 @@ class TestBlockGridEditor(unittest.TestCase):
 		self.bgss = mock.Mock()
 		self.block_grid = mock.Mock()
 		self.block_grid_selector = mock.Mock()
-		self.block_grid_editor = block_grid_editor.BlockGridEditor(self.bgss, self.block_grid_selector)
+		self.block_grid_save_loader = mock.Mock()
+		self.block_grid_editor = block_grid_editor.BlockGridEditor(self.bgss, self.block_grid_selector, self.block_grid_save_loader)
 		self.mouse_pos = mock.Mock()
 		pygame.init()
 
@@ -209,6 +210,25 @@ class TestBlockGridEditor(unittest.TestCase):
 
 		# THEN
 		self.block_grid.lower_point.assert_called_once_with((0, 0), 0, block_grid_editor.DEFAULT_RAISE_INC)
+
+	def testSave(self):
+		e = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_s)
+
+		# WHEN
+		self.block_grid_editor.handle_event(self.block_grid, e)
+
+		# THEN
+		self.block_grid_save_loader.save.assert_called_once_with(self.block_grid, block_grid_editor.DEFAULT_SAVE_NAME)
+
+	def testLoad(self):
+		e = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_l)
+
+		# WHEN
+		result = self.block_grid_editor.handle_event(self.block_grid, e)
+
+		# THEN
+		self.block_grid_save_loader.load.assert_called_once_with(block_grid_editor.DEFAULT_SAVE_NAME)
+		self.assertEqual(result, self.block_grid_save_loader.load.return_value)
 
 def get_keys_pressed_with_lshift():
 	keys_pressed = {}
